@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+	<context:component-scan base-package="pe.gob.sblm.sgi.scheduler" />
+
+	<context:property-placeholder order="1"
+								  location="classpath*:configuracionHorarioJob.properties"
+								  ignore-unresolvable="true"/>
+
+<!-- Desactivar Cuenta -->
+	<bean name="desactivarCuentaTaskJobDetail" 	class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="pe.gob.sblm.sgi.scheduler.job.SgiJob" />
+		<property name="jobDataMap">
+			<map>
+				<entry key="sgiTask" value-ref="desactivarCuenta" />
+			</map>
+		</property>
+		<property name="durability" value="true" />
+	</bean>
+
+	<bean id="desactivarCuentaCronTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="desactivarCuentaTaskJobDetail" />
+		<property name="cronExpression" value="${cron.expressions.intervalo.desactivarcuenta}" />
+	</bean>
+	
+	
+<!-- Actualizar estado de contratos-->	
+	<bean name="actualizarEstadoContratoTaskJobDetail" 	class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="pe.gob.sblm.sgi.scheduler.job.SgiJob" />
+		<property name="jobDataMap">
+			<map>
+				<entry key="sgiTask" value-ref="actualizarEstadoContrato" />
+			</map>
+		</property>
+		<property name="durability" value="true" />
+	</bean>
+	
+	<bean id="actualizarEstadoContratoCronTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="actualizarEstadoContratoTaskJobDetail" />
+		<property name="cronExpression" value="${cron.expressions.intervalo.actualizarEstadoContrato}" />
+	</bean>
+	
+<!-- Difusion de Estado de condiciones-->		
+	<bean name="difusionEstadoCondicionesTaskJobDetail" 	class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="pe.gob.sblm.sgi.scheduler.job.SgiJob" />
+		<property name="jobDataMap">
+			<map>
+				<entry key="sgiTask" value-ref="difusionEstadoCondiciones" />
+			</map>
+		</property>
+		<property name="durability" value="true" />
+	</bean>
+	
+	<bean id="difusionEstadoCondicionesCronTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="difusionEstadoCondicionesTaskJobDetail" />
+		<property name="cronExpression" value="${cron.expressions.intervalo.difusionEstadoCondiciones}" />
+	</bean>
+	
+	
+<!-- Envio de correo de notificaciones-->		
+	<bean name="envioCorreoNotificacionTaskJobDetail" 	class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="pe.gob.sblm.sgi.scheduler.job.SgiJob" />
+		<property name="jobDataMap">
+			<map>
+				<entry key="sgiTask" value-ref="envioCorreoNotificacion" />
+			</map>
+		</property>
+		<property name="durability" value="true" />
+	</bean>
+	
+	<bean id="envioCorreoNotificacionCronTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="envioCorreoNotificacionTaskJobDetail" />
+		<property name="cronExpression" value="${cron.expressions.intervalo.envioCorreoNotificacion}" />
+	</bean>
+	
+<!-- Alerta de registro de ipc-->		
+	<bean name="alertaRegistroIPCTaskJobDetail" 	class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="pe.gob.sblm.sgi.scheduler.job.SgiJob" />
+		<property name="jobDataMap">
+			<map>
+				<entry key="sgiTask" value-ref="alertaRegistroIPC" />
+			</map>
+		</property>
+		<property name="durability" value="true" />
+	</bean>
+	
+	<bean id="alertaRegistroIPCCronTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="alertaRegistroIPCTaskJobDetail" />
+		<property name="cronExpression" value="${cron.expressions.intervalo.alertaRegistroIpc}" />
+	</bean>
+	
+<!-- Generar rentas pendiente siguiente año-->	
+	<bean name="generarRentasPendientesTaskJobDetail" 	class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="pe.gob.sblm.sgi.scheduler.job.SgiJob" />
+		<property name="jobDataMap">
+			<map>
+				<entry key="sgiTask" value-ref="generarRentasPendientes" />
+			</map>
+		</property>
+		<property name="durability" value="true" />
+	</bean>
+	
+	<bean id="generarRentasPendientesCronTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="generarRentasPendientesTaskJobDetail" />
+		<property name="cronExpression" value="${cron.expressions.intervalo.generarRentasPendientes}" />
+	</bean>
+	
+	
+<!-- Generar sin contratos por falta de entrega de inmueble-->	
+	<bean name="generarSinContratoTaskJobDetail" 	class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="pe.gob.sblm.sgi.scheduler.job.SgiJob" />
+		<property name="jobDataMap">
+			<map>
+				<entry key="sgiTask" value-ref="generarSinContrato" />
+			</map>
+		</property>
+		<property name="durability" value="true" />
+	</bean>
+	
+	<bean id="generarSinContratoCronTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="generarSinContratoTaskJobDetail" />
+		<property name="cronExpression" value="${cron.expressions.intervalo.generarSinContrato}" />
+	</bean>
+
+
+	<!-- Scheduler factory bean to glue together jobDetails and triggers to Configure Quartz Scheduler -->
+	<bean  class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="jobDetails">
+			<list>
+				<ref bean="desactivarCuentaTaskJobDetail" />
+				<ref bean="actualizarEstadoContratoTaskJobDetail" />
+				<ref bean="difusionEstadoCondicionesTaskJobDetail" />
+				<ref bean="envioCorreoNotificacionTaskJobDetail" />
+				<ref bean="alertaRegistroIPCTaskJobDetail" />
+				<ref bean="generarRentasPendientesTaskJobDetail" />
+				<ref bean="generarSinContratoTaskJobDetail" />
+			</list>
+		</property>
+
+		<property name="triggers">
+			<list>
+				<ref bean="desactivarCuentaCronTrigger" />
+				<ref bean="actualizarEstadoContratoCronTrigger" />
+				<ref bean="difusionEstadoCondicionesCronTrigger" />
+				<ref bean="envioCorreoNotificacionCronTrigger" />
+				<ref bean="alertaRegistroIPCCronTrigger" />
+				<ref bean="generarRentasPendientesCronTrigger" />
+				<ref bean="generarSinContratoCronTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+	
+	
+	<context:component-scan base-package="pe.gob.sblm.sgi.scheduler." />
+
+	<bean id="datasource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:/batchSgiDS" />
+		<property name="lookupOnStartup" value="false" />
+		<property name="cache" value="true" />
+		<property name="proxyInterface" value="javax.sql.DataSource" />
+	</bean>
+
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="datasource" />
+	</bean>
+	
+	<bean id="arrendamientoDao" class="pe.gob.sblm.sgi.scheduler.daoImpl.ArrendamientoDAOImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+	</bean>
+	
+	<bean id="usuarioDao" class="pe.gob.sblm.sgi.scheduler.daoImpl.UsuarioDAOImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+	</bean>
+	
+	<bean id="notificacionDao" class="pe.gob.sblm.sgi.scheduler.daoImpl.NotificacionDAOImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+	</bean>
+	
+	<bean id="ipcDao" class="pe.gob.sblm.sgi.scheduler.daoImpl.IpcDAOImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+	</bean>
+	
+	<bean id="locale" class="java.util.Locale">
+		<constructor-arg>
+			<value>ES</value>
+		</constructor-arg>
+	</bean>
+</beans>

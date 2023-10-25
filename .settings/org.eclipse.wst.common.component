@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="sgi-scheduler-sblm">
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <dependent-module archiveName="api-commons-sblm-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/api-commons-sblm/api-commons-sblm">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="api-alfresco-sblm-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/api-alfresco-sblm/api-alfresco-sblm">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="api-mail-sblm-1.2.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/api-mail-sblm-1.2/api-mail-sblm-1.2">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="api-sftp-sblm-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/api-sftp-sblm/api-sftp-sblm">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="java-output-path" value="/sgi-scheduler-sblm/target/classes"/>
+        <property name="context-root" value="sgi-scheduler-sblm"/>
+    </wb-module>
+</project-modules>
